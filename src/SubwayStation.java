@@ -24,4 +24,8 @@ public class SubwayStation extends Actor {
     public void setPassengers(List<Passenger> passengers) {
         this.passengers = passengers;
     }
+
+    @Override
+    public void act() {
+    }
 }
