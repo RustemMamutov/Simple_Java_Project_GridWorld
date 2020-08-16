@@ -2,6 +2,7 @@ import info.gridworld.actor.Actor;
 import info.gridworld.grid.Grid;
 import info.gridworld.grid.Location;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Train extends Actor {
@@ -9,10 +10,24 @@ public class Train extends Actor {
     private int stepsWait = 0;
     private SubwayStation nearSubwayStation;
 
+    private static final int DEFAULT_MAX_PASS_COUNT = 100;
+    private final int MAX_PASS_COUNT;
+    private final List<Passenger> passengers;
+
+    public Train() {
+        this(DEFAULT_MAX_PASS_COUNT);
+    }
+
+    public Train(int MAX_PASS_COUNT) {
+        this.MAX_PASS_COUNT = MAX_PASS_COUNT;
+        this.passengers = new ArrayList<>();
+    }
+
     public void act() {
         findNearSubwayStation();
         if (stepsWait == 0 && nearSubwayStation != null){
-            doSomethingWithPassengers();
+            dropPassengers();
+            takePassengers();
             stepsWait++;
             nearSubwayStation = null;
             return;
@@ -79,7 +94,21 @@ public class Train extends Actor {
         }
     }
 
-    private void doSomethingWithPassengers(){
-        System.out.println("hello world");
+    private void dropPassengers(){
+        List<Passenger> dropped = new ArrayList<>();
+        for (Passenger passenger : this.passengers) {
+            if (passenger.getDestinationStation() == this.nearSubwayStation.getNumber()) {
+                dropped.add(passenger);
+            }
+        }
+
+        this.passengers.removeAll(dropped);
+    }
+
+    private void takePassengers(){
+        int countToTake = MAX_PASS_COUNT - this.passengers.size();
+        List<Passenger> passengersToTake = this.nearSubwayStation.getPassengers().subList(0, countToTake);
+        this.nearSubwayStation.getPassengers().removeAll(passengersToTake);
+        this.passengers.addAll(passengersToTake);
     }
 }

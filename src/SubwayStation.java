@@ -6,15 +6,21 @@ import java.util.List;
 
 public class SubwayStation extends Actor {
 
+    private final int number;
     private List<Passenger> passengers;
 
-    public SubwayStation() {
-        passengers = new ArrayList<>();
+    public SubwayStation(int number) {
+        this(number, new ArrayList<>());
         this.setColor(Color.LIGHT_GRAY);
     }
 
-    public SubwayStation(List<Passenger> passengers) {
+    public SubwayStation(int number, List<Passenger> passengers) {
+        this.number = number;
         this.passengers = passengers;
+    }
+
+    @Override
+    public void act() {
     }
 
     public List<Passenger> getPassengers() {
@@ -25,7 +31,7 @@ public class SubwayStation extends Actor {
         this.passengers = passengers;
     }
 
-    @Override
-    public void act() {
+    public int getNumber() {
+        return number;
     }
 }

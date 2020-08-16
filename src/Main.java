@@ -13,10 +13,10 @@ public class Main {
         Location location = new Location(0,0);
 
         world.add(location, new Train());
-        world.add(new Location(rows/2, 1), new SubwayStation());
-        world.add(new Location(rows/2, cols - 2), new SubwayStation());
-        world.add(new Location(1, cols/2), new SubwayStation());
-        world.add(new Location(rows - 2, cols/2), new SubwayStation());
+        world.add(new Location(rows/2, 1), new SubwayStation(1));
+        world.add(new Location(rows/2, cols - 2), new SubwayStation(2));
+        world.add(new Location(1, cols/2), new SubwayStation(3));
+        world.add(new Location(rows - 2, cols/2), new SubwayStation(4));
         world.show();
     }
 }

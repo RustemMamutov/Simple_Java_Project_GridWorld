@@ -5,4 +5,8 @@ public class Passenger {
     public Passenger(int destinationStation) {
         this.destinationStation = destinationStation;
     }
+
+    public int getDestinationStation() {
+        return destinationStation;
+    }
 }
