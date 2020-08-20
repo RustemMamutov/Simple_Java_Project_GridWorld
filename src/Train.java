@@ -26,14 +26,17 @@ public class Train extends Actor {
     public void act() {
         findNearSubwayStation();
         if (stepsWait == 0 && nearSubwayStation != null){
+            System.out.println("========================");
+            System.out.println("STATION №" + nearSubwayStation.getNumber());
             dropPassengers();
             takePassengers();
+            System.out.println("========================");
             stepsWait++;
-            nearSubwayStation = null;
             return;
         }
 
         stepsWait = 0;
+        nearSubwayStation = null;
         if (this.canMove()) {
             this.move();
         } else {
@@ -95,20 +98,40 @@ public class Train extends Actor {
     }
 
     private void dropPassengers(){
+        System.out.println("Start dropping passengers");
         List<Passenger> dropped = new ArrayList<>();
         for (Passenger passenger : this.passengers) {
             if (passenger.getDestinationStation() == this.nearSubwayStation.getNumber()) {
                 dropped.add(passenger);
             }
         }
-
+        System.out.println(String.format("Count of passengers in train before: %s", this.passengers.size()));
+        System.out.println(String.format("Count of dropped passengers: %s", dropped.size()));
         this.passengers.removeAll(dropped);
+        System.out.println(String.format("Count of passengers in train after: %s", this.passengers.size()));
+        System.out.println();
     }
 
     private void takePassengers(){
+        System.out.println("Start taking passengers");
         int countToTake = MAX_PASS_COUNT - this.passengers.size();
-        List<Passenger> passengersToTake = this.nearSubwayStation.getPassengers().subList(0, countToTake);
+        List<Passenger> passengersToTake = new ArrayList<>();
+        if (countToTake >= this.nearSubwayStation.getPassengers().size()) {
+            passengersToTake.addAll(new ArrayList<>(this.nearSubwayStation.getPassengers()));
+        } else {
+            passengersToTake.addAll(new ArrayList<>(this.nearSubwayStation.getPassengers().subList(0, countToTake)));
+        }
+
+        System.out.println(String.format("Count of passengers on station before: %s",
+                this.nearSubwayStation.getPassengers().size()));
+        System.out.println(String.format("Count of passengers in train before: %s", this.passengers.size()));
+        System.out.println(String.format("Count of passengers to take: %s", passengersToTake.size()));
         this.nearSubwayStation.getPassengers().removeAll(passengersToTake);
         this.passengers.addAll(passengersToTake);
+
+        System.out.println(String.format("Count of passengers on station after: %s",
+                this.nearSubwayStation.getPassengers().size()));
+        System.out.println(String.format("Count of passengers in train after taking: %s",
+                this.passengers.size()));
     }
 }
